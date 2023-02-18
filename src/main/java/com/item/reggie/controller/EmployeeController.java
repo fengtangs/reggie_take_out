@@ -97,15 +97,19 @@ public class EmployeeController {
         //初始密码，MD5加密
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
 
-        employee.setCreateTime(LocalDateTime.now());
 
-        employee.setUpdateTime(LocalDateTime.now());
+        //剩下的这些都去MyMateObjectHandler类里面让mabits plus 给我们写
 
-        Long empId=(Long)request.getSession().getAttribute("employee");
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
+        //        //创建时间
+//        employee.setCreateTime(LocalDateTime.now());
+//        //更新时间
+//        employee.setUpdateTime(LocalDateTime.now());
+//        //创建人
+//        Long empId=(Long)request.getSession().getAttribute("employee");
+//        employee.setCreateUser(empId);
+//        employee.setUpdateUser(empId);
 
-
+        //创建
         employeeService.save(employee);
         return R.success("新增员工成功！");
     }
