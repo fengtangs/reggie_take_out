@@ -36,7 +36,9 @@ public class LoginCheckFilter implements Filter {
                 "/employee/logout",
                 "/backend/**",
                 "/front/**",
-                "/common/**"
+                "/common/**",
+                "/user/login",
+                "user/sendMsg"
         };
 
 
@@ -51,16 +53,45 @@ public class LoginCheckFilter implements Filter {
         }
 
         //4、判断登录状态，如果已登录，则直接放行
-        if(request.getSession().getAttribute("employee") != null){
-            log.info("用户已登录，用户id为：{}",request.getSession().getAttribute("employee"));
+        if(request.getSession().getAttribute("employee") != null||request.getSession().getAttribute("user") != null){
+            if(request.getSession().getAttribute("employee") != null){
+                log.info("员工已登录，用户id为：{}",request.getSession().getAttribute("employee"));
 
-            Long empId=(Long)request.getSession().getAttribute("employee");
-            BaseContext.setCurrentId(empId);
-            filterChain.doFilter(request,response);
-            return;
+                Long empId=(Long)request.getSession().getAttribute("employee");
+                BaseContext.setCurrentId(empId);
+                filterChain.doFilter(request,response);
+                return;
+            }
+            if(request.getSession().getAttribute("user") != null){
+
+                String[] urls_tep = new String[]{
+                        "/employee/**",
+                };
+
+
+                //2、判断本次请求是否需要处理
+                boolean check_1 = check(urls_tep, requestURI);
+                if(!check_1){
+                    log.info("用户已登录，用户id为：{}",request.getSession().getAttribute("user"));
+
+                    Long empId=(Long)request.getSession().getAttribute("user");
+                    BaseContext.setCurrentId(empId);
+                    filterChain.doFilter(request,response);
+                    return;
+                }
+
+
+               else{
+                   log.info("非法访问");
+                    response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
+                    return;
+                }
+
+            }
+
         }
 
-        log.info("用户未登录");
+        log.info("未登录");
         //5、如果未登录则返回未登录结果，通过输出流方式向客户端页面响应数据
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
         return;

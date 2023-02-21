@@ -39,5 +39,11 @@ public class GlobalExceptionHandler {
 
         return R.error(ex.getMessage());
     }
+    @ExceptionHandler(SecurityException.class)
+    public R<String> exceptionHandler(SecurityException ex){
+        log.error(ex.getMessage());
+
+        return R.error(ex.getMessage());
+    }
 
 }
