@@ -70,7 +70,7 @@ public class CategoryController {
             LambdaQueryWrapper<Category> queryWrapper =new LambdaQueryWrapper<>();
 
             //排序条件
-            queryWrapper.orderByAsc(Category::getSort);
+            queryWrapper.orderByAsc(Category::getUpdateTime);
 
             //执行查询
             categoryService.page(pageInfo,queryWrapper);

@@ -76,7 +76,8 @@ public class CommonController {
             fileInputStream.close();
 
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("文件资源不存在："+basepath+name);
+//            e.printStackTrace();
         }
     }
 }

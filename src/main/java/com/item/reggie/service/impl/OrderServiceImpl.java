@@ -103,4 +103,35 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         //清空购物车数据
         shoppingCartService.remove(shoppingCartLambdaQueryWrapper);
     }
+
+    @Override
+    public void reloadorders(Long orderId, Long UserId) {
+                //查询到订单，获取订单详细信息
+        Orders order= this.getById(orderId);
+        //使用订单id查询到订单细节
+        LambdaQueryWrapper<OrderDetail>orderDetailLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        orderDetailLambdaQueryWrapper.eq(OrderDetail::getOrderId,orderId);
+        List<OrderDetail> orderDetailList=orderDetailService.list(orderDetailLambdaQueryWrapper);
+        //清空购物车，把订单重新放到购物车
+        LambdaQueryWrapper<ShoppingCart> shoppingCartLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getUserId,UserId);
+        shoppingCartService.remove(shoppingCartLambdaQueryWrapper);
+
+//        List<ShoppingCart> shoppingCartList=new ArrayList<>();
+        for (OrderDetail tmp:orderDetailList){
+            ShoppingCart shoppingCart=new ShoppingCart();
+
+            shoppingCart.setId(IdWorker.getId());
+            shoppingCart.setUserId(UserId);
+            shoppingCart.setImage(tmp.getImage());
+            shoppingCart.setDishId(tmp.getDishId());
+            shoppingCart.setSetmealId(tmp.getSetmealId());
+            shoppingCart.setDishFlavor(tmp.getDishFlavor());
+            shoppingCart.setNumber(tmp.getNumber());
+            shoppingCart.setAmount(tmp.getAmount());
+            shoppingCart.setCreateTime(LocalDateTime.now());
+            shoppingCartService.save(shoppingCart);
+        }
+
+    }
 }

@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RestController
+@RestController  //@REST  @Controller
 @RequestMapping("/order")
 public class OrderController {
 
@@ -185,43 +185,12 @@ public class OrderController {
     @PostMapping("/again")
     public R<String> again(HttpServletRequest httpServletRequest,@RequestBody Orders orders){
         log.info("id={}",orders.getId());
-//        LambdaQueryWrapper<Orders> ordersLambdaQueryWrapper=new LambdaQueryWrapper<>();
-
-
 
         //1.获取用户id
         Long userid= (Long) httpServletRequest.getSession().getAttribute("user");
-        //查询到订单，获取订单详细信息
-        Orders order= orderService.getById(orders.getId());
-        //使用订单id查询到订单细节
-        LambdaQueryWrapper<OrderDetail>orderDetailLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        orderDetailLambdaQueryWrapper.eq(OrderDetail::getOrderId,orders.getId());
-        List<OrderDetail> orderDetailList=orderDetailService.list(orderDetailLambdaQueryWrapper);
-        //清空购物车，把订单重新放到购物车
-        LambdaQueryWrapper<ShoppingCart> shoppingCartLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        shoppingCartLambdaQueryWrapper.eq(ShoppingCart::getUserId,userid);
-        shoppingCartService.remove(shoppingCartLambdaQueryWrapper);
 
-//        List<ShoppingCart> shoppingCartList=new ArrayList<>();
-        for (OrderDetail tmp:orderDetailList){
-            ShoppingCart shoppingCart=new ShoppingCart();
-
-            shoppingCart.setId(IdWorker.getId());
-            shoppingCart.setUserId(userid);
-            shoppingCart.setImage(tmp.getImage());
-            shoppingCart.setDishId(tmp.getDishId());
-            shoppingCart.setSetmealId(tmp.getSetmealId());
-            shoppingCart.setDishFlavor(tmp.getDishFlavor());
-            shoppingCart.setNumber(tmp.getNumber());
-            shoppingCart.setAmount(tmp.getAmount());
-            shoppingCart.setCreateTime(LocalDateTime.now());
-            shoppingCartService.save(shoppingCart);
-        }
-
-
-
+        orderService.reloadorders(orders.getId(), userid);
         return R.success("success");
-
 
     }
 }

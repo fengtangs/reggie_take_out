@@ -6,4 +6,5 @@ import com.item.reggie.entity.Orders;
 public interface OrderService extends IService<Orders>{
 
     public void submit(Orders orders,Long userid);
+    public void reloadorders(Long orderId,Long UserId);
 }
