@@ -5,6 +5,7 @@ import com.item.reggie.common.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Configuration
+@Import(MyBatisPlusConfig.class)
 public class WebMvcConfig  extends WebMvcConfigurationSupport {
     @Value("${reggie.page_path_1}")
     private  String  page_path_1;
@@ -46,3 +48,8 @@ public class WebMvcConfig  extends WebMvcConfigurationSupport {
         converters.add(0,messageConverter);
     }
 }
+
+
+
+
+

@@ -8,6 +8,7 @@ import com.item.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -157,7 +158,14 @@ public class EmployeeController {
         employeeService.updateById(employee);
         return R.success("员工信息修改成功");
     }
+
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
+    @Cacheable(value = "cache_employee_info",key = "#id")
     public R<Employee> getById(@PathVariable Long id){
         log.info("根据id查询员工信息");
         Employee employee=employeeService.getById(id);

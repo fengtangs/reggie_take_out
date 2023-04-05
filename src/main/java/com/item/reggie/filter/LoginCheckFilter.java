@@ -38,6 +38,7 @@ public class LoginCheckFilter implements Filter {
                 "/front/**",
                 "/common/**",
                 "/user/login",
+                "/usr/*",
                 "user/sendMsg"
         };
 

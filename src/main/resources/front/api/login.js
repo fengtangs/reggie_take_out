@@ -13,4 +13,12 @@ function loginoutApi() {
   })
 }
 
+
+function sendmsgApi(data) {
+    return $axios({
+        'url': '/usr/code',
+        'method': 'post',
+        data
+    })
+}
   

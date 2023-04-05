@@ -71,7 +71,7 @@ public class SetmealController {
 
             List<Setmeal> records=pageinfo.getRecords();
 
-            List<SetmealDto> setmealDtoList=records.stream().map((item)->{
+            List<SetmealDto> setmealDtoList=records.stream().map((Setmeal item)->{
                 SetmealDto setmealDto=new SetmealDto();
                 BeanUtils.copyProperties(item,setmealDto);
 
@@ -112,8 +112,10 @@ public class SetmealController {
             updateWrapper.set("status",status).in("id",ids);
 
             setmealService.update(updateWrapper);
-            if(status==0)
+            if(status==0){
                 return R.success("停售成功！");
+
+            }
             return R.success("启售成功！");
         }
         return R.error("NOTLOGIN");
@@ -154,7 +156,7 @@ public class SetmealController {
      */
 
     @PutMapping
-    public R<String> change_save(HttpServletRequest httpServletRequest,@RequestBody SetmealDto setmealDto){
+    public R<String> change_Save(HttpServletRequest httpServletRequest,@RequestBody SetmealDto setmealDto){
 
         if(CheckFilter.checkemployee(httpServletRequest)) {
             log.info(setmealDto.toString());
@@ -222,7 +224,10 @@ public class SetmealController {
             }
 
             if(flag==0)
+            {
                 return R.success("全部删除成功");
+            }
+
             else if (flag<length) {
                 return R.success("部分删除成功，还有"+String.valueOf(length-flag)+"个未删除，因为是在售状态！");
             }
@@ -255,7 +260,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<Setmeal>> get_list(Setmeal setmeal){
+    public R<List<Setmeal>> get_List(Setmeal setmeal){
         log.info(setmeal.toString());
 
         LambdaQueryWrapper<Setmeal> queryWrapper=new LambdaQueryWrapper<>();

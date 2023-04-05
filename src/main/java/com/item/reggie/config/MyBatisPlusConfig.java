@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 /**
  * 配置MP的分页插件
  */
-@Configuration
+//@Configuration
 public class MyBatisPlusConfig {
+//    @
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
         MybatisPlusInterceptor mybatisPlusInterceptor=new MybatisPlusInterceptor();

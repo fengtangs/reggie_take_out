@@ -5,12 +5,20 @@ spring:
   application:
     #应用的名称，可选
     name: reggie_take_out
+
+  #配置ehcache
+  cache:
+    type: ehcache
+
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://192.168.196.32:3306/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: root
+  devtools:
+    restart:
+      enabled: false
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
@@ -21,7 +29,7 @@ mybatis-plus:
       id-type: ASSIGN_ID
 
 reggie:
-  path: D:\img\
+  path: /storage/emulated/0/img/
   page_path_1: /backend
   page_path_2: /backend
 
@@ -34,7 +42,10 @@ logging:
     name: server.log
   logback:
     rollingpolicy:
-      max-file-size: 4KB
-      file-name-pattern: server.%d{yyyy-mm-dd}.%i.log
+      max-file-size: 1MB
+      file-name-pattern: server.%d.%i.log
+
+
+
 
 
